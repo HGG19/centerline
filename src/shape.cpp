@@ -1,9 +1,10 @@
 #include "shape.hpp"
 #include <algorithm>
 #include <math.h>
+#include <tuple>
 #include <iostream>
 
-bool Point::operator==(const Point& rhs) {
+bool Point::operator==(const Point& rhs) const {
     double radius = 0.5;
     if (fabs(x - rhs.x) <= 100 * std::numeric_limits<double>::epsilon() + radius) {
         if (fabs(y - rhs.y) <= 100 * std::numeric_limits<double>::epsilon() + radius) {

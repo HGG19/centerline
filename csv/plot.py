@@ -37,6 +37,6 @@ with open('centerline.csv','r') as csvfile:
 plt.plot(x_c, y_c, 'ro', color='r')
 #plt.plot(x_v, y_v, 'ro', color='g')
 #plt.plot(x_s, y_s, 'ro', color='y')
-plt.plot(x_center, y_center, 'ro', color='y')
+plt.plot(x_center, y_center, '-ro', color='y')
 
 plt.show()

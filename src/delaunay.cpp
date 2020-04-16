@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <math.h>
 #include <Eigen/Dense>
-#include <iostream>
 
 bool Edge::operator==(const Edge& rhs) {
     if (A == rhs.A && B == rhs.B || A == rhs.B && B == rhs.A) return true;
@@ -88,9 +87,8 @@ bool Delaunay::_check_intersection(Point A, Point B, Point C, Point D) {  // tod
     }
     if (x_intersection < std::max(std::min(A.x, B.x), std::min(C.x, D.x)) || x_intersection > std::min(std::max(A.x, B.x), std::max(C.x, D.x))) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 void Delaunay::_bowyer_watson() {
@@ -166,7 +164,6 @@ void Delaunay::_bowyer_watson() {
     }), _triangulation.end());
 }
 
-
 void Delaunay::_find_voronoi() {
     auto closest_cone_distance = [this](Point p) {
         double dist = _super_size;
@@ -195,9 +192,7 @@ void Delaunay::_find_voronoi() {
         Point candidate{_super_size, _super_size};
         int candidate_index = 0;
         for (int i = 0; i < unsorted_voronoi_points.size(); ++i) {
-            double voronoi_x = sorted_voronoi_points.back().x;
-            double voronoi_y = sorted_voronoi_points.back().y;
-            if (_len(voronoi_x, voronoi_y, unsorted_voronoi_points.at(i).x, unsorted_voronoi_points.at(i).y) < _len(voronoi_x, voronoi_y, candidate.x, candidate.y)) {
+            if (sorted_voronoi_points.back().distance(unsorted_voronoi_points.at(i)) < sorted_voronoi_points.back().distance(candidate)) {
                 candidate = unsorted_voronoi_points.at(i);
                 candidate_index = i;
             }
@@ -207,16 +202,6 @@ void Delaunay::_find_voronoi() {
         unsorted_voronoi_points.erase(unsorted_voronoi_points.begin() + candidate_index);
         unsorted_delaunay_triangles.erase(unsorted_delaunay_triangles.begin() + candidate_index);
     }
-
-    std::ofstream delaunay_file;
-    delaunay_file.open("csv/delaunay.csv", std::ios::trunc);
-        for (auto& triangle : sorted_delaunay_triangles) {
-            delaunay_file << triangle.A.x << ", " << triangle.A.y << "\n";
-            delaunay_file << triangle.B.x << ", " << triangle.B.y << "\n";
-            delaunay_file << triangle.C.x << ", " << triangle.C.y << "\n";
-        }
-    delaunay_file.close();
-
 
     for (int i = 0; i < sorted_voronoi_points.size(); ++i) {
         bool intersect = false;

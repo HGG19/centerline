@@ -2,7 +2,6 @@
 #define __DELAUNAY__HPP__
 
 #include "shape.hpp"
-#include <fstream>
 #include <vector>
 
 struct Triangle {

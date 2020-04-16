@@ -4,7 +4,7 @@
 struct Point {
     double x;
     double y;
-    bool operator==(const Point& rhs);
+    bool operator==(const Point& rhs) const;
     double distance(const Point& rhs);
 };
 
